@@ -10,6 +10,20 @@ Quickstart (CLI):
 git clone git@github.com:ecomaikgolf/typst-isec-slides-template.git ~/.local/share/typst/packages/local/definitely-not-isec-slides/
 typst init @preview/definitely-not-isec-slides:1.0.0 slides
 ```
+
+Quickstart (WebIDE):
+
+> [!WARNING]
+> This won't work until the package is upstreamed & published, use the CLI
+> method
+
+- [Create Document](https://typst.app/app?template=definitely-not-isec-slides&version=1.0.0)
+- [Homepage](https://typst.app/universe/package/definitely-not-isec-slides)
+
+> [!NOTE]
+> If you are an ISEC or TUGraz employee and think that `isec-thesis` or
+> `tugraz-thesis` fits more, I would need an approval to allocate the name :)
+
 Tested typst version: `0.13.0`.
 
 ## Typst
