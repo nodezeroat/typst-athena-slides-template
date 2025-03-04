@@ -8,7 +8,7 @@ Quickstart (CLI):
 
 ```sh
 git clone git@github.com:ecomaikgolf/typst-isec-slides-template.git ~/.local/share/typst/packages/local/definitely-not-isec-slides/
-typst init @preview/definitely-not-isec-slides:1.0.0 slides
+typst init @local/definitely-not-isec-slides:1.0.0 slides
 ```
 
 Quickstart (WebIDE):
