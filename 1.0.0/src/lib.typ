@@ -106,7 +106,7 @@
 					grid(
 						columns: (ratio * 100%, 1fr), gutter: 0pt,
 						block(fill: colors.tug),
-						block(fill: colors.tug),
+						block(),
 					)
 				})
 			]

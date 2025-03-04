@@ -10,7 +10,7 @@
   date: [ 29th Jan 2025 ],
   footer: [ First Author ],
   extra: [ SomeConf 2025 ],
-  progress: false,
+  progress: true,
 )
 
 = List
