@@ -1,5 +1,7 @@
 # Typst ISEC Slides Template
 
+> An opinionated version of the ISEC slides template made in Typst
+
 Quickstart (CLI):
 
 > [!NOTE]
@@ -24,7 +26,7 @@ Quickstart (WebIDE):
 > If you are an ISEC or TUGraz employee and think that `isec-thesis` or
 > `tugraz-thesis` fits more, I would need an approval to allocate the name :)
 
-Tested typst version: `0.13.0`.
+Tested typst version: `0.13.1`.
 
 ## Typst
 
@@ -61,21 +63,40 @@ xdg-open slides.typ
 
 Now edit `slides.typ` and it will be incrementally built in each save.
 
-Incremental builds are blazingly fast, but regular PDF rendering (on the
-viewer) is a bottleneck here. 
-
-Use tinymist with neovim's `:TypstPreview` (or VSCode plugin), which uses the
-browser to do PDF partial renderings and previews will be even more responsive.
-No need for running `typst watch` now. It even has features like cursor sync,
-click to jump, etc.
-
 ## Design
+---
+<img width="1754" height="987" alt="title" src="https://github.com/user-attachments/assets/d29f53ff-0622-45fe-9727-7d286e8d15b1" />
 
-TODO
+---
+<img width="1754" height="987" alt="list" src="https://github.com/user-attachments/assets/27dc198d-714d-4ed6-ad2e-f39babcf4fce" />
 
-## Samples
+---
+<img width="1754" height="987" alt="listimage" src="https://github.com/user-attachments/assets/b16cb69b-c9a1-4f50-8fd5-e7c3b0a97617" />
 
-TODO
+---
+<img width="1754" height="987" alt="standout" src="https://github.com/user-attachments/assets/179960f4-e909-4856-8aba-6beb7a91e3c5" />
+
+---
+<img width="1754" height="987" alt="colors" src="https://github.com/user-attachments/assets/312a013e-fd89-4b6a-921b-bbfe9f4fa565" />
+
+---
+<img width="1754" height="987" alt="features" src="https://github.com/user-attachments/assets/1f3cd158-3860-4962-9802-7fc22d4b94a1" />
+
+---
+<img width="1754" height="987" alt="code" src="https://github.com/user-attachments/assets/508abb37-8224-4ef8-9424-2f367981b91f" />
+
+---
+<img width="1754" height="987" alt="blocks" src="https://github.com/user-attachments/assets/e4214dc0-f434-40d2-b1fa-0463ef18d9b7" />
+
+---
+<img width="1754" height="987" alt="plots" src="https://github.com/user-attachments/assets/605a3bab-c040-4932-9777-03dffabb3a9f" />
+
+---
+<img width="1754" height="987" alt="blank" src="https://github.com/user-attachments/assets/7533e702-bba3-4462-add2-f2fbe1e50a20" />
+
+---
+<img width="1754" height="987" alt="bibliography" src="https://github.com/user-attachments/assets/03d9f47a-e082-4e89-92f2-b3c746dd8f34" />
+
 
 ## License `src/assets/tuglogo.svg`
 
