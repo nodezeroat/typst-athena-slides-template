@@ -1,6 +1,6 @@
 # Typst ISEC Slides Template
 
-> An opinionated version of the ISEC slides template made in Typst
+> An opinionated version of the ISEC slides template made in Typst. Easily configurable for other institutes or organizations.
 
 Quickstart (CLI):
 
@@ -90,6 +90,9 @@ Now edit `slides.typ` and it will be incrementally built in each save.
 
 ---
 <img width="1754" height="987" alt="plots" src="https://github.com/user-attachments/assets/605a3bab-c040-4932-9777-03dffabb3a9f" />
+
+---
+<img width="1754" height="987" alt="configurable" src="https://github.com/user-attachments/assets/310a25e2-981c-40b3-bbcb-fc243cbb5983" />
 
 ---
 <img width="1754" height="987" alt="blank" src="https://github.com/user-attachments/assets/7533e702-bba3-4462-add2-f2fbe1e50a20" />
