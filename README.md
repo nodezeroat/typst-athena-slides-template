@@ -98,7 +98,8 @@ Now edit `slides.typ` and it will be incrementally built in each save.
 <img width="1754" height="987" alt="blank" src="https://github.com/user-attachments/assets/7533e702-bba3-4462-add2-f2fbe1e50a20" />
 
 ---
-<img width="1754" height="987" alt="bibliography" src="https://github.com/user-attachments/assets/03d9f47a-e082-4e89-92f2-b3c746dd8f34" />
+<img width="1754" height="987" alt="bibliography" src="https://github.com/user-attachments/assets/6ad78bf1-8af1-43c3-ad15-192fdfd42aff" />
+
 
 
 ## License `src/assets/tuglogo.svg`
