@@ -1,116 +1,106 @@
-#import "@local/definitely-not-isec-slides:1.0.0": *
+#import "../src/lib.typ": *
+//#import "@local/definitely-not-isec-slides:1.0.0": *
 
-// ----------------------------------------------------------------------------
-// Configuration
-// ----------------------------------------------------------------------------
-#show: slides.with(
-  title: [ Long Paper Title #linebreak() with One to Three Lines],
-  subtitle: [ An optional short subtitle ],
-  authors: ( [*First Author*], [Second Author], [Third Author], ),
-  date: [ 29th Jan 2025 ],
-  footer: [ First Author ],
-  extra: [ SomeConf 2025 ],
-  progress: true,
+#show: definitely-not-isec-theme.with(
+  aspect-ratio: "16-9",
+  slide-alignment: top,
+  config-info(
+    title: [Long Paper Title \ with One to Three Lines],
+    subtitle: [An optional short subtitle],
+    authors: ([*First Author*], [Second Author], [Third Author]),
+    extra: [SomeConf 2025],
+    footer: [First Author, Second Author, Third Author],
+    download-qr: "",
+  ),
+  config-common(
+    handout: false,
+  ),
 )
 
-= List
+// -------------------------------[[ CUT HERE ]]--------------------------------
+//
+// === Available slides ===
+//
+// #title-slide()
+// #standout-slide()
+// #section-slide()
+// #blank-slide()
+// #bibliography-slide()
+// #slide()
+//
+// === Available macros ===
+// #intro-block[]
+// #color-block[]
+// #icon-block[]
+//
+// === Integration with pdfpc ===
+//
+// Use #note("...") to add pdfpc presenter annotations on a specific slide
+// Before presenting, export all notes to a pdfpc file:
+// $ typst query slides.typ --field value --one "<pdfpc-file>" > slides.pdfpc
 
-- First point...
-- Second point...
-  - Subpoint...
-  - Subpoint...
-- Third point...
+// -------------------------------[[ CUT HERE ]]--------------------------------
+ 
+#title-slide()
 
-= List and Figure
-
-#grid(columns: (1fr, 1fr),
-  [
-    1. First point...
-    2. Second point...
-    3. Third point...
-  ],
-  [
-    #rect(width: 95%, height: 60%)
+#slide(title: [First Slide])[
+  #quote-block[
+    Important or introductory phrase for the current slide topic.
   ]
+
+  Continuatory explanation @emg25template over the introductory phrase, leading to:
+
+  #v(0.2cm)
+  #grid(
+    columns: 2,
+    column-gutter: 0.6cm,
+    color-block([Result A])[
+      - Benefit
+      - Benefit
+      - Downside
+    ],
+    color-block([Result B])[
+      - Benefit
+      - Downside
+      - Downside
+    ],
+  )
+  #v(0.2cm)
+
+  #lorem(10)
+
+  #v(0.2cm)
+  ```c
+  int main() {
+    void *p = malloc(0x10);
+  }
+  ```
+]
+
+#slide(title: [First Slide])[
+  #quote-block[
+    #lorem(20)
+  ]
+
+]
+
+#section-slide(
+  title: [Section A],
+  subtitle: [Longer Subtitle]
 )
 
-#standout-slide[Standout slide]
-
-#section-slide([Section Header], [Optional subtitle or figure])
-
-= Blocks
-
-#tblock([Color], color: colors.tugblue)[
-  Highlighted content: _Emphasis_, a + _b_ = c, _n-dimensional_
+#slide(title: [Second Slide])[
+  #rect(fill: gray.lighten(70%), width: 100%, height: 100%)[
+    #align(center + horizon)[
+      Usable Area
+    ]
+  ]
 ]
 
-#tblock([Alert Block])[
-  Important content: _Alert_, a + _b_ = c
+= This is a test
+
+test
+
+#slide(title: [Bibliography], alignment: top)[
+  #bibliography("bibliography.bib")
 ]
-
-#tblock([Example Block], color: colors.tuggreen)[
-  Example content
-]
-
-#block[
-  #set align(horizon)
-
-  #highlight[Highlight (main)] 
-  #highlight(color: colors.tugblue)[Highlight (empth)]
-  Normal text
-  #comment[Minor comment]
-]
-
-= Color Palette
-
-#v(-1.5cm)
-#colors.showcase
-
-= Lists with FontAwesome
-
-
-Checklist:
-
-- [x] Item 1
-- [x] Item 2
-- [ ] Item 3
-
-Advantages and Disadvantages:
-
-- [+] Advantage
-- [-] Disadvantage
-- [>] Conclusion
-
-- this is a test
-
-= Color Scheme for PGFplots: Lines
-
-= Color Scheme for PGFplots: Fill
-
-= Code Listings
-
-Powered by codly:
-
-```cpp
-int main() {
-  std::vector<int> test(50);
-}
-```
-
-```sh
-#!/bin/bash
-
-exit 0
-```
-
-= Usable Area
-
-#rect(width: 100%, height: 100%, fill: colors.tugmid)
-
-= Acknowledgements
-
-This is a test@emg25template
-
-#bibliography("bibliography.bib")
-
-

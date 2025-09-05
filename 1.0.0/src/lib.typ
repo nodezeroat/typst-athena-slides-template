@@ -1,284 +1,413 @@
-#import "@preview/polylux:0.4.0": *
-#import "@preview/codly:1.2.0": *
-#import "@preview/showybox:2.0.4": showybox
-#import "@preview/cheq:0.2.2": *
-#import "@preview/fontawesome:0.5.0": *
+#import "@preview/touying:0.6.1": *
 
-#import "pages/title.typ": *
-#import "pages/outline.typ": *
-#import "colors.typ"
+// Project
+#import "tugcolors.typ"
+#import "helper.typ": *
+#import "logos.typ": *
+#import "macros.typ": *
 
-#let slides(
-	title: none,
-	subtitle: none,
-	authors: none,
-	date: none,
-	footer: none,
-	progress: true,
-	extra: none,
-	body
-) = [
+#import "@preview/codly:1.3.0": * // For bindings
+#import "@preview/cetz:0.3.2" // For bindings
+#import "@preview/fletcher:0.5.5" as fletcher: edge, node // For bindings
+#import "@preview/tiaoma:0.3.0" // For auto QR generation
 
+// Touying bindings for cetz
+#let cetz-canvas = touying-reducer.with(
+  reduce: cetz.canvas,
+  cover: cetz.draw.hide.with(bounds: true),
+)
+// Touying bindings for fletcher
+#let fletcher-diagram = touying-reducer.with(
+  reduce: fletcher.diagram,
+  cover: fletcher.hide,
+)
 
-	#let get-heading(level: 1) = context {
-		let ah = query(heading.where(level: level).after(here()))
-		let bh = query(heading.where(level: level).before(here()))
-
-		if ah.len() > 0 {
-			let h = ah.first()
-			if h.location().page() == here().page() {
-				h.body
-			} else {
-				if bh.len() > 0 {
-					let h = bh.last()
-					h.body
-				}
-			}
-		}
-	}
-
-	#show emph: it => {
-		text(colors.tug, it.body)
-	}
-
-	// --------------------------------------------------------------------------
-	// Text
-
-	#set text(size: 20pt, lang: "en", region: "US", font: "Open Sans")
-	
-	// --------------------------------------------------------------------------
-	// Page
-
-	#set page(
-		paper: "presentation-16-9",
-		margin: (
-			left:   1.49cm,
-			right:  1.48cm,
-			top:    2.6cm,
-			bottom: 1.6cm,
-		),
-		header: [
-				#set block(width: 100%)
-				#set text(fill: black)
-
-				#grid(columns: (auto, 25%), gutter: 0pt, align: top,
-					block[
-						#text(size: 24pt, weight: "semibold", get-heading())
-					],
-					block()[
-						#align(top + right)[
-							#v(-0.17cm)
-							#move(dx: 0.27cm)[
-								#text(size: 13.5pt, weight: "medium")[isec.tugraz.at]
-								#h(0.1cm)
-								#box(inset: 0pt, outset: 0pt)[#square(width: 0.3cm, height: 0.3cm, outset: 0pt, inset: 0pt, stroke: none, fill: colors.tug)]
-							]
-						]
-					],
-				)
-		],
-		footer: context [
-			#let footer-body = [
-
-				#set block(height: 100%, width: 100%)
-				#set text(size: 15pt, fill: rgb("808080"))
-
-				#grid(columns: (page.margin.bottom.length - 1.68%, 1.3%, auto, 2.5%),
-							gutter: 0pt, align: horizon,
-					block(fill: colors.tug)[
-						#set align(center + horizon)
-						#set text(fill: white, size: 12pt)
-						#toolbox.slide-number
-					],
-					block(),
-					block[
-						#set align(left + horizon)
-						#set text(size: 13pt)
-						#footer
-					],
-					block(),
-				)
-			]
-
-			#let progress-body = [
-				#set block(height: 2pt, width: 100%)
-				#toolbox.progress-ratio(ratio => {
-					grid(
-						columns: (ratio * 100%, 1fr), gutter: 0pt,
-						block(fill: colors.tug),
-						block(),
-					)
-				})
-			]
-
-			#show: toolbox.full-width-block[
-				#stack(dir: ttb, 
-					block(height: 100%, footer-body),
-					if progress { place(float: true, bottom)[#progress-body] }
-				)
-			]
-		],
-	)
-
-	// --------------------------------------------------------------------------
-	// Enumerate and listing
-
-	#let default-map = (
-		"x": text(fill: colors.tuggreen, fa-square-check()),
-		" ": text(fill: colors.tuggray, fa-square()),
-		"+": text(fill: colors.tuggreen, fa-plus-circle()),
-		"-": text(fill: colors.tug, fa-minus-circle()),
-		">": text(fill: colors.tugblue, fa-arrow-circle-right()),
-	)
-
-
-	// TODO not a big fan of doing this one
-	#show: checklist.with(
-		marker-map: default-map,
-		show-list-set-block: (above: 0.7em, below: 0.7em),
-		radius: 0pt,
-	)
-
-	// TODO improve
-
-	#set list(indent: 0.48cm, body-indent: 1.2em, spacing: 0.4cm)
-	#set list(marker: ( 
-		(move(dy: 0.11cm, square(width: 0.4em, height: 0.4em, fill: colors.tug))),
-		(move(dy: 0.11cm, square(width: 0.4em, height: 0.4em, fill: black))),
-		(move(dy: 0.11cm, square(width: 0.4em, height: 0.4em, fill: gray))),
-	))
-
-	//#show list.item.where(level: 1): set text(size: 10pt)
-
-	#set enum(numbering: n => [
-		#square(stroke: none, fill: colors.tug)[
-			#align(center)[
-				#text(fill: white)[#n]
-			]
-		]
-	])
-
-	// --------------------------------------------------------------------------
-	// Code listings
-
-	#show raw.where(block: true): set text(size: 13pt)
-
-	#show: codly-init.with()
-	#codly(
-		display-name: false,
-		display-icon: false,
-		radius: 0pt,
-		stroke: 1pt + black,
-		smart-indent: true,
-		zebra-fill: luma(240),
-		number-format: (number) => [#text(size: 12pt, fill: gray)[#number]],
-		number-align: right + horizon,
-		breakable: true)
-
-	// --------------------------------------------------------------------------
-	// Bibliography
-
-	#set bibliography(title: "Bibliography", style: "ieee")
-	#set cite(style: "alphanumeric")
-	#show bibliography: set par(spacing: 0.4cm)
-	#show bibliography: set grid(align: top + left)
-	#show bibliography: set text(17pt)
-	#show bibliography: t => {
-		show grid.cell.where(x: 0): set text(fill: colors.tug)
-		show grid.cell.where(x: 0): set align(top + left)
-		show link: set text(fill: colors.tuggray)
-		t
-	}
-
-	// --------------------------------------------------------------------------
-	// Page
-	#show heading.where(level: 1): it => [
-		#slide[
-			// Hack to show the slides even if empty
-			#place(left + top, hide(square(width: 0pt, height: 0pt)))
-		]
-	]
-
-	#title-slide(title, subtitle, authors, extra)
-
-	#counter("logical-slide").update(0)
-	#set align(horizon)
-
-	#body
+// Macro for notes
+#let note(text) = [
+  #pdfpc.speaker-note(text)
 ]
 
-// Standout slides don't count as real slides in the official template
-#let standout-slide(body) = [
-	#set page(footer: none, header: none)
-	#set align(center)
-	#set text(size: 28pt)
-	#move(dy: -2.08cm)[
-		#body
-	]
-]
+// -----------------------------------------------------------------------------
+// Slide Types
+// -----------------------------------------------------------------------------
 
-#let section-slide(section, subtitle) = [
-	#set page(footer: none, header: none)
-	#set align(center)
+//
+// Normal Slide
+//
+#let slide(
+  title: auto,
+  alignment: none,
+  outlined: true,
+  ..args,
+) = touying-slide-wrapper(self => {
+  let info = self.info + args.named()
 
-	#slide[
-		#move(dy: -0.3cm)[
-			#text(size: 36pt)[#section]
+  // Header:
+  // ---------------------------------------------------------------------------
+  // [ ] Slide Title                                                [ ] Logo [ ]
+  // ---------------------------------------------------------------------------
+  let header(self) = {
+    // Slide Title: if the user overrides the title of a certain slide, use it
+    let hdr = if title != auto { title } else { self.store.header }
 
-			#v(-0.2cm)
-			#text(size: 20pt)[#subtitle]
-		]
-	]
-]
+    show heading: set text(size: 24pt, weight: "semibold")
 
-#let blank-slide(body) = [
-	#set page(footer: none, header: none, margin: 0pt)
-	#set align(center)
+    grid(
+      columns: (self.page.margin.left, 1fr, 1cm, auto, 1.2cm),
+      block(),
+      heading(level: 1, outlined: outlined, hdr),
+      block(),
+      move(dy: -0.31cm, institute-logo(self)),
+      block(),
+    )
+  }
 
-	#slide[
-		#body
-	]
-]
+  // Footer:
+  // ---------------------------------------------------------------------------
+  // Slide Number [ ] First Author
+  // ---------------------------------------------------------------------------
+  let footer(self) = context {
+    set block(height: 100%, width: 100%)
+    set text(size: 15pt, fill: self.colors.footer)
 
-#let highlight(color: colors.tug, fill: white, body) = [
-	#box[
-		#rect(fill: color, inset: (x: 0.2em, y: 0.4em))[
-			#set text(fill: fill)
-			#body
-		]
-	]
-]
+    grid(
+      columns: (self.page.margin.bottom - 1.68%, 1.3%, auto, 1cm),
+      block(fill: self.colors.primary)[
+        #set align(center + horizon)
+        #set text(fill: white, size: 12pt)
+        #utils.slide-counter.display()
+      ],
+      block(),
+      block[
+        #set align(left + horizon)
+        #set text(size: 13pt)
+        #info.at("footer", default: "")
+      ],
+      block(),
+    )
 
-#let comment(body) = [
-	#set text(fill: colors.tuggray, size: 16pt)
-	#body
-]
+    // Progress bar
+    if self.store.progress-bar {
+      place(bottom + left, float: true,
+        move(dy: 1.05cm, // Bad solution, I know
+          components.progress-bar(
+            height: 3pt,
+            self.colors.primary,
+            white,
+          )
+        )
+      )
+    }
+  }
 
-#let tblock(title, body, color: colors.tug, color-body: colors.lite) = [
+  let self = utils.merge-dicts(self, config-page(
+    header: header,
+    footer: footer,
+  ))
 
-	#show emph: it => {
-		text(weight: "medium", fill: color, it.body)
-	}
+  set align(
+    if alignment == none {
+      self.store.default-alignment 
+    } else {
+      alignment 
+    } 
+  )
 
-	#showybox(
-			title-style: (
-				color: white,
-				sep-thickness: 0pt,
-			),
-			frame: (
-				//inset: 0.4em,
-					radius: 0pt,
-					thickness: 0pt,
-					border-color: color,
-					title-color: color,
-					body-color: color-body,
-					inset: (x: 0.55em, y: 0.65em),
-			),
-			above: 0.78em,
-			below: 0.78em,
-			title: title,
-			body
-		)
-]
+  touying-slide(self: self, ..args)
+})
+
+// 
+// Title Slide
+// 
+#let title-slide(..args) = touying-slide-wrapper(self => {
+  let info = self.info + args.named()
+  let body = {
+    let footer-isec = [
+      #set text(size: 13.3pt, weight: "medium")
+
+      #let arrow-icon = [
+        #move(dy: -0.05cm, dx: -0.05cm, rotate(45deg, square(
+          fill: none,
+          size: 0.18cm,
+          stroke: (
+            "top": self.colors.primary + 1.35pt,
+            "bottom": none,
+            "right": self.colors.primary + 1.35pt,
+            "left": none,
+          ),
+        )))
+      ]
+
+      #v(-0.5cm)
+      #box(arrow-icon) #h(0.1cm) #self.store.institute
+    ]
+
+    set page(footer: footer-isec, header: none)
+    set block(below: 0pt, above: 0pt)
+
+    // Top-right icon + text
+    place(top + right, dy: -1.9cm, dx: 0.78cm, [
+      #self.store.logo
+    ])
+
+    v(0.8cm)
+
+    block(width: 83%)[
+      #let title = text(size: 40.5pt, weight: "bold")[#info.at(
+          "title",
+          default: "",
+        )]
+
+      #move(dx: 0.04em)[
+        #grid(
+          columns: (0.195cm, auto),
+          column-gutter: 0.7cm,
+          context [
+            #let s = measure(title)
+            #move(dy: -0.4cm, rect(
+              fill: self.colors.primary,
+              height: s.height + 0.65cm,
+            ))
+          ],
+          title,
+        )
+      ]
+    ]
+
+    v(0.6cm)
+
+    block(width: 70%)[
+      #text(
+        size: 28.3pt,
+        fill: self.colors.primary,
+        weight: "bold",
+      )[#info.subtitle]
+    ]
+
+    v(1.48cm)
+
+    block(width: 70%)[
+      #set text(size: 19pt)
+      #if type(info.authors) == array [
+        #for author in info.authors [
+          #author #h(1.1em)
+        ]
+      ] else [
+        #info.authors
+      ]
+    ]
+
+    v(0.95cm)
+
+    block(width: 70%)[
+      #info.extra
+    ]
+
+    if (
+      self.info.at("download-qr", default: none) != none
+        and self.info.at("download-qr", default: none) != ""
+    ) {
+      place(bottom + right)[
+        #align(center + horizon)[
+          #let s = 4.9cm
+          #tiaoma.qrcode(self.info.download-qr, width: s, height: s)
+        ]
+      ]
+    }
+  }
+
+  touying-slide(self: self, body)
+})
+
+//
+// Standout Slide
+//
+#let standout-slide(
+  title: auto,
+  ..args,
+) = touying-slide-wrapper(self => {
+  let body = {
+    set align(center + horizon)
+    set text(size: 28pt)
+    move(dy: -2.08cm)[
+      #text(weight: "semibold")[#title]
+    ]
+  }
+
+  let self = utils.merge-dicts(self, config-page(
+    header: none,
+    footer: none,
+  ))
+
+  //counter("touying-slide-counter").update(n => if n > 0 { n - 1 } else { 0 })
+
+  touying-slide(self: self, body, ..args)
+})
+
+//
+// Section Slide
+//
+#let section-slide(
+  title: none,
+  subtitle: none,
+  ..args,
+) = touying-slide-wrapper(self => {
+  let body = {
+    align(center + horizon)[
+      #move(dy: -0.4cm)[
+        #if title != none [
+          #text(size: 36pt, weight: "semibold")[#title]
+        ]
+
+        #if subtitle != none [
+          #text(size: 20pt)[#subtitle]
+        ]
+      ]
+    ]
+  }
+
+  let self = utils.merge-dicts(self, config-page(
+    header: none,
+    footer: none,
+  ))
+
+  touying-slide(self: self, body, ..args)
+})
+
+//
+// Blank Slide
+//
+#let blank-slide(
+  ..args,
+  body,
+) = touying-slide-wrapper(self => {
+  let body = {
+    align(center + horizon)[
+      #body
+    ]
+  }
+
+  let self = utils.merge-dicts(self, config-page(
+    header: none,
+    footer: none,
+    margin: 0pt,
+  ))
+
+  touying-slide(self: self, body, ..args)
+})
+
+// -----------------------------------------------------------------------------
+// Main Function
+// -----------------------------------------------------------------------------
+
+#let definitely-not-isec-theme(
+  aspect-ratio: "16-9",
+  header: utils.display-current-heading(level: 1),
+  font: "Open Sans",
+  institute: [isec.tugraz.at],
+  logo: tugraz-logo,
+  slide-alignment: top,
+  progress-bar: true,
+  ..args,
+  body,
+) = {
+  // Touying configuration
+  show: touying-slides.with(
+    config-page(
+      paper: "presentation-" + aspect-ratio,
+      margin: (
+        left: 1.49cm,
+        right: 1.48cm,
+        top: 2.6cm,
+        bottom: 1.6cm,
+      )
+    ),
+    config-store(
+      header: header,
+      font: font,
+      institute: institute,
+      logo: logo,
+      default-alignment: slide-alignment,
+      progress-bar: progress-bar,
+    ),
+    config-common(
+      slide-fn: slide,
+      new-section-slide-fn: none,
+      preamble: {
+        codly(
+          display-name: false,
+          display-icon: false,
+          radius: 0pt,
+          stroke: 1pt + black,
+          smart-indent: true,
+          fill: luma(260),
+          zebra-fill: luma(250),
+          number-format: number => [#text(size: 12pt, fill: gray)[#number]],
+          number-align: right + horizon,
+          breakable: true,
+        )
+      }
+    ),
+    config-colors(primary: tugcolors.tug, footer: rgb("808080")),
+    config-methods(
+      cover: (self: none, body) => hide(body),
+      init: (
+      self: none,
+      body,
+    ) => {
+      // TUGraz uses Source Sans Pro, but its a licensed Adobe font
+      set text(size: 20pt, lang: "en", region: "US", font: font)
+      show emph: it => { text(self.colors.primary, it.body) }
+      show strong: it => { text(weight: "bold", it.body) }
+
+      // Bibliography
+      set bibliography(title: none, style: "ieee")
+      set cite(style: "alphanumeric")
+      show bibliography: set par(spacing: 0.4cm)
+      show bibliography: set grid(align: top + left)
+      show bibliography: set text(17pt)
+      show bibliography: t => {
+        show grid.cell.where(x: 0): set text(fill: self.colors.primary)
+        show grid.cell.where(x: 0): set align(top + left)
+        show link: set text(fill: gray)
+        t
+      }
+
+      // Lists & Enums
+      set list(
+        marker: ( 
+          (move(dy: 0.11cm, square(width: 0.4em, height: 0.4em, fill: self.colors.primary))),
+          (move(dy: 0.11cm, square(width: 0.4em, height: 0.4em, fill: black))),
+          (move(dy: 0.11cm, square(width: 0.4em, height: 0.4em, fill: gray))),
+        ),
+        body-indent: 1.2em,
+      )
+      set enum(
+        numbering: n => {
+          square(stroke: none, fill: self.colors.primary, size: 0.53cm)[
+            #align(center + horizon)[ #text(size: 12pt, fill: white)[#n] ]
+          ]
+        },
+        body-indent: 0.6cm
+      )
+
+
+      // Code blocks
+      show: codly-init.with()
+      show raw.where(block: true): set text(size: 13pt)
+
+
+      // Hotfixes, the messy part
+
+      // https://github.com/touying-typ/touying/issues/136
+      set par(spacing: 0.65em)
+
+      body
+    }),
+    ..args,
+  )
+
+  body
+}
 
 //vim:tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab colorcolumn=81
