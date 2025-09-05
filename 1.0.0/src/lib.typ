@@ -4,12 +4,15 @@
 #import "tugcolors.typ"
 #import "helper.typ": *
 #import "logos.typ": *
-#import "macros.typ": *
 
+// Core Imports
 #import "@preview/codly:1.3.0": * // For bindings
 #import "@preview/cetz:0.3.2" // For bindings
 #import "@preview/fletcher:0.5.5" as fletcher: edge, node // For bindings
 #import "@preview/tiaoma:0.3.0" // For auto QR generation
+
+// Styling Macro Imports
+#import "@preview/showybox:2.0.4": showybox
 
 // Touying bindings for cetz
 #let cetz-canvas = touying-reducer.with(
@@ -409,5 +412,86 @@
 
   body
 }
+
+// -----------------------------------------------------------------------------
+// Styling Macros
+// -----------------------------------------------------------------------------
+
+#let quote-block(
+  top-pad: 0.55cm,
+  color: tugcolors.tug,
+  spacing: 0.3cm,
+  body,
+) = [
+  #touying-fn-wrapper((self: none) => [
+    // Grid with the design
+    #let g(s: 0cm, body) = [
+      #grid(
+        columns: (0.195cm, auto),
+        column-gutter: 0.7cm,
+        row-gutter: 0cm,
+        [
+        #rect(
+          fill: self.colors.primary,
+          height: s + top-pad,
+        )
+      ],
+        align(horizon, body),
+      )
+    ]
+
+    // We compute its "auto" heigth and then print it with the correct height
+    #layout(size => {
+      let (height,) = measure(width: size.width, g(body))
+      g(s: height, body)
+    })
+
+    #v(spacing)
+  ])
+]
+
+// https://tabler.io/icons
+
+#let color-block(
+  title,
+  icon: none,
+  spacing: 0.78em,
+  color: none,
+  color-body: tugcolors.lite,
+  body
+) = [
+  #import "@preview/tableau-icons:0.331.0": *
+  #touying-fn-wrapper((self: none) => [
+    #show emph: it => {
+      text(weight: "medium", fill: self.colors.primary, it.body)
+    }
+
+    #showybox(
+      title-style: (
+        color: white,
+        sep-thickness: 0pt,
+      ),
+      frame: (
+        //inset: 0.4em,
+        radius: 0pt,
+        thickness: 0pt,
+        border-color: if color == none { self.colors.primary } else { color },
+        title-color: if color == none { self.colors.primary } else { color },
+        body-color: color-body,
+        inset: (x: 0.55em, y: 0.65em),
+      ),
+      above: spacing,
+      below: spacing,
+      title: if icon == none {
+        align(horizon)[#strong(title)]
+      } else {
+        align(horizon)[
+    #draw-icon(icon, height: 1.2em, baseline: 20%, fill: white) #h(0.2cm) #strong[#title]
+        ]
+      },
+      body,
+    )
+  ])
+]
 
 //vim:tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab colorcolumn=81

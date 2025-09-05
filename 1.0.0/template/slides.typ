@@ -15,6 +15,9 @@
   config-common(
     handout: false,
   ),
+  config-colors(
+    primary: black,
+  ),
 )
 
 // -------------------------------[[ CUT HERE ]]--------------------------------
