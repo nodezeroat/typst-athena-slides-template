@@ -1,5 +1,4 @@
-#import "../src/lib.typ": *
-//#import "@local/definitely-not-isec-slides:1.0.0": *
+#import "@local/definitely-not-isec-slides:1.0.0": *
 
 #show: definitely-not-isec-theme.with(
   aspect-ratio: "16-9",
@@ -16,7 +15,6 @@
     handout: false,
   ),
   config-colors(
-    primary: black,
   ),
 )
 
@@ -25,85 +23,36 @@
 // === Available slides ===
 //
 // #title-slide()
-// #standout-slide()
-// #section-slide()
+// #standout-slide(title)
+// #section-slide(title,subtitle)
 // #blank-slide()
-// #bibliography-slide()
-// #slide()
+// #slide(title)
 //
 // === Available macros ===
-// #intro-block[]
-// #color-block[]
-// #icon-block[]
 //
-// === Integration with pdfpc ===
+// #quote-block(body)
+// #color-block(title, body)
+// #icon-block(title, icon, body)
+//
+// === Presenting with pdfpc ===
 //
 // Use #note("...") to add pdfpc presenter annotations on a specific slide
 // Before presenting, export all notes to a pdfpc file:
 // $ typst query slides.typ --field value --one "<pdfpc-file>" > slides.pdfpc
-
+// $ pdfpc slides.pdf
+//
 // -------------------------------[[ CUT HERE ]]--------------------------------
  
 #title-slide()
 
 #slide(title: [First Slide])[
   #quote-block[
-    Important or introductory phrase for the current slide topic.
+    Good luck with your presentation! @emg25template
   ]
 
-  Continuatory explanation @emg25template over the introductory phrase, leading to:
-
-  #v(0.2cm)
-  #grid(
-    columns: 2,
-    column-gutter: 0.6cm,
-    color-block([Result A])[
-      - Benefit
-      - Benefit
-      - Downside
-    ],
-    color-block([Result B])[
-      - Benefit
-      - Downside
-      - Downside
-    ],
-  )
-  #v(0.2cm)
-
-  #lorem(10)
-
-  #v(0.2cm)
-  ```c
-  int main() {
-    void *p = malloc(0x10);
-  }
-  ```
+  #note("This will show on pdfpc speaker notes ;)")
 ]
 
-#slide(title: [First Slide])[
-  #quote-block[
-    #lorem(20)
-  ]
-
-]
-
-#section-slide(
-  title: [Section A],
-  subtitle: [Longer Subtitle]
-)
-
-#slide(title: [Second Slide])[
-  #rect(fill: gray.lighten(70%), width: 100%, height: 100%)[
-    #align(center + horizon)[
-      Usable Area
-    ]
-  ]
-]
-
-= This is a test
-
-test
-
-#slide(title: [Bibliography], alignment: top)[
+#slide(title: [Bibliography])[
   #bibliography("bibliography.bib")
 ]

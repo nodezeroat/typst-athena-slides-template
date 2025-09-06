@@ -9,7 +9,7 @@ repository = "https://github.com/ecomaikgolf/typst-isec-slides-template"
 categories = ["slides"]
 disciplines = ["computer-science", "engineering"]
 keywords = ["ISEC", "Institute of Information Security", "IAIK", "TUGraz", "Graz University of Technology", "thesis", "template", "Master Thesis"]
-compiler = "0.13.0"
+compiler = "0.13.1"
 
 [template]
 path = "template"
