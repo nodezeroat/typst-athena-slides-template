@@ -1,4 +1,4 @@
-#import "@local/definitely-not-isec-slides:1.0.0": *
+#import "@preview/definitely-not-isec-slides:1.0.0": *
 
 #show: definitely-not-isec-theme.with(
   aspect-ratio: "16-9",
