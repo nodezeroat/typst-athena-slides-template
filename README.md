@@ -73,7 +73,7 @@ Now edit `slides.typ` and it will be incrementally built in each save.
 ![colors](https://github.com/user-attachments/assets/312a013e-fd89-4b6a-921b-bbfe9f4fa565)
 
 ---
-![features]https://github.com/user-attachments/assets/1f3cd158-3860-4962-9802-7fc22d4b94a1)
+![features](https://github.com/user-attachments/assets/1f3cd158-3860-4962-9802-7fc22d4b94a1)
 
 ---
 ![code](https://github.com/user-attachments/assets/508abb37-8224-4ef8-9424-2f367981b91f)
