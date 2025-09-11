@@ -3,12 +3,12 @@
 Quickstart (CLI):
 
 ```sh
-typst init @preview/definitely-not-isec-slides:1.0.0 slides
+typst init @preview/definitely-not-isec-slides:1.0.1 slides
 ```
 
 Quickstart (WebIDE):
 
-- [Create Document](https://typst.app/app?template=definitely-not-isec-slides&version=1.0.0)
+- [Create Document](https://typst.app/app?template=definitely-not-isec-slides&version=1.0.1)
 - [Homepage](https://typst.app/universe/package/definitely-not-isec-slides)
 
 Keep in mind you'll need the Open Sans font configured in the web editor.
