@@ -1,14 +1,14 @@
 [package]
-name = "definitely-not-isec-slides"
+name = "athena-slides"
 version = "1.0.1"
 entrypoint = "src/lib.typ"
-authors = ["Ernesto Martínez <https://ecomaikgolf.com>"]
+authors = ["Ernesto Martínez <https://ecomaikgolf.com>", "Marcel Schnideritsch"]
 license = "MIT"
-description = "An unofficial ISEC TUGraz slides template"
-repository = "https://github.com/ecomaikgolf/typst-isec-slides-template"
+description = "Theme based on an unofficial ISEC TUGraz slides template"
+repository = "https://github.com/nodezeroat/typst-athena-slides-template/"
 categories = ["presentation"]
 disciplines = ["computer-science", "engineering"]
-keywords = ["ISEC", "Institute of Information Security", "IAIK", "TUGraz", "Graz University of Technology", "thesis", "template", "Master Thesis"]
+keywords = []
 compiler = "0.13.1"
 
 [template]

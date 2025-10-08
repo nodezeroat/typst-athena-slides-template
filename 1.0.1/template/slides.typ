@@ -1,24 +1,24 @@
-#import "@preview/definitely-not-isec-slides:1.0.1": *
+#import "../src/lib.typ": *
 
-#show: definitely-not-isec-theme.with(
+#show: athena-theme.with(
   aspect-ratio: "16-9",
   slide-alignment: top,
   progress-bar: true,
-  institute: [isec.tugraz.at],
-  logo: [#tugraz-logo],
+  font: "Berkeley Mono",
+  institute: [\@nodezeroat/project-athena],
+  logo: [],
   config-info(
-    title: [Long Paper Title \ with One to Three Lines],
-    subtitle: [An optional short subtitle],
-    authors: ([*First Author*], [Second Author], [Third Author]),
-    extra: [SomeConf 2025],
+    title: [Module 01: Legal],
+    subtitle: [Überblick über die Rechtslage in Österreich und Deutschland],
+    authors: ([*Marcel Schnideritsch*]),
+    extra: [],
     footer: [First Author, Second Author, Third Author],
-    download-qr: "",
   ),
   config-common(
     handout: false,
   ),
   config-colors(
-      primary: rgb("e4154b"),
+      primary: rgb("14b5fc"),
   ),
 )
 
@@ -48,6 +48,8 @@
 // -------------------------------[[ CUT HERE ]]--------------------------------
  
 #title-slide()
+
+#section-slide(title: [First Section])
 
 #slide(title: [First Slide])[
   #quote-block[

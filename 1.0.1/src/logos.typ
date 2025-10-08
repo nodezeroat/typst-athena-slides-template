@@ -13,28 +13,10 @@
   ]
 ]
 
-#let tugraz-logo = [
+#let nodezero-logo = [
   #set align(right)
   #set text(size: 12pt, tracking: 3.6pt)
-
-  #image("assets/tuglogo.svg", width: 4.1cm)
-
-  #v(0.13cm)
-
-  #move(dx: -0.07cm)[
-    SCIENCE
-  ]
-
-  #v(0.65em)
-
-  #move(dx: -0.03cm)[
-    PASSION
-  ]
-
-  #v(0.65em)
-
-  #move(dx: -0.06cm)[
-    TECHNOLOGY
+  #move(dx: -1cm, dy: 1cm)[
+    #image("assets/nodezero-logo.svg", width: 6cm)
   ]
 ]
-

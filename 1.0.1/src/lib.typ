@@ -14,7 +14,7 @@
 #import "@preview/showybox:2.0.4": showybox
 
 // -----------------------------------------------------------------------------
-// General Config 
+// General Config
 // -----------------------------------------------------------------------------
 
 // Touying bindings for cetz
@@ -45,7 +45,7 @@
 ///
 /// - title (content): Title for the slide
 /// - alignment (alignment): Alignment of the contents of the slide
-/// - outlined (boolean): If the slide shows on the PDF ToC 
+/// - outlined (boolean): If the slide shows on the PDF ToC
 ///
 /// -> content
 #let slide(
@@ -67,12 +67,8 @@
     show heading: set text(size: 24pt, weight: "semibold")
 
     grid(
-      columns: (self.page.margin.left, 1fr, 1cm, auto, 1.2cm),
-      block(),
-      heading(level: 1, outlined: outlined, hdr),
-      block(),
-      move(dy: -0.31cm, institute-logo(self)),
-      block(),
+      columns: (self.page.margin.left, 1fr, 1cm, 1.2cm),
+      block(), heading(level: 1, outlined: outlined, hdr), block(), block(),
     )
   }
 
@@ -85,7 +81,7 @@
     set text(size: 15pt, fill: self.colors.footer)
 
     grid(
-      columns: (self.page.margin.bottom - 1.68%, 1.3%, auto, 1cm),
+      columns: (self.page.margin.bottom - 1.68%, 1.3%, auto, 8cm),
       block(fill: self.colors.primary)[
         #set align(center + horizon)
         #set text(fill: white, size: 12pt)
@@ -97,20 +93,23 @@
         #set text(size: 13pt)
         #info.at("footer", default: "")
       ],
-      block(),
+      block[
+        #set align(left + horizon)
+        #set text(size: 13pt)
+        #self.store.institute
+      ]
     )
 
     // Progress bar
     if self.store.progress-bar {
-      place(bottom + left, float: true,
-        move(dy: 1.05cm, // Bad solution, I know
-          components.progress-bar(
-            height: 3pt,
-            self.colors.primary,
-            white,
-          )
-        )
-      )
+      place(bottom + left, float: true, move(
+        dy: 1.05cm, // Bad solution, I know
+        components.progress-bar(
+          height: 3pt,
+          self.colors.primary,
+          white,
+        ),
+      ))
     }
   }
 
@@ -121,10 +120,10 @@
 
   set align(
     if alignment == none {
-      self.store.default-alignment 
+      self.store.default-alignment
     } else {
-      alignment 
-    } 
+      alignment
+    },
   )
 
   touying-slide(self: self, ..args)
@@ -174,9 +173,9 @@
 
     block(width: 83%)[
       #let title = text(size: 40.5pt, weight: "bold")[#info.at(
-          "title",
-          default: "",
-        )]
+        "title",
+        default: "",
+      )]
 
       #move(dx: 0.04em)[
         #grid(
@@ -224,8 +223,7 @@
     ]
 
     if (
-      self.info.at("download-qr", default: none) != none
-        and self.info.at("download-qr", default: none) != ""
+      self.info.at("download-qr", default: none) != none and self.info.at("download-qr", default: none) != ""
     ) {
       place(bottom + right)[
         #align(center + horizon)[
@@ -258,16 +256,21 @@
     set align(center + horizon)
     set text(size: 28pt)
     if title != none {
-      move(dy: -2.08cm)[
-        #text(weight: "semibold")[#title]
+      move(dy: -0.4cm)[
+        #text(self.colors.lite, weight: "semibold")[#title]
       ]
     }
   }
 
-  let self = utils.merge-dicts(self, config-page(
-    header: none,
-    footer: none,
-  ))
+  let self = utils.merge-dicts(
+    self,
+    config-page(
+      fill: self.colors.dark,
+      margin: 2em,
+      header: none,
+      footer: none,
+    ),
+  )
 
   //counter("touying-slide-counter").update(n => if n > 0 { n - 1 } else { 0 })
 
@@ -292,17 +295,24 @@
   ..args,
 ) = touying-slide-wrapper(self => {
   let body = {
-    align(center + horizon)[
-      #move(dy: -0.4cm)[
-        #if title != none [
-          #text(size: 36pt, weight: "semibold")[#title]
-        ]
-
-        #if subtitle != none [
-          #text(size: 20pt)[#subtitle]
-        ]
-      ]
-    ]
+    set std.align(horizon)
+    show: pad.with(15%)
+    set text(size: 1.5em)
+    stack(
+      dir: ttb,
+      spacing: 1em,
+      text(title),
+      block(
+        height: 2pt,
+        width: 100%,
+        spacing: 0pt,
+        components.progress-bar(
+          height: 3pt,
+          self.colors.primary,
+          self.colors.primary-light,
+        ),
+      ),
+    )
   }
 
   let self = utils.merge-dicts(self, config-page(
@@ -383,13 +393,13 @@
 /// - config-common (dict):
 ///     - handout (bool): Boolean for handout mode
 /// - config-colors (dict): Colors for the presentation
-///     - ... see definition of `#definitely-not-isec-theme`
-#let definitely-not-isec-theme(
+///     - ... see definition of `#athena-theme`
+#let athena-theme(
   aspect-ratio: "16-9",
   header: utils.display-current-heading(level: 1),
   font: "Open Sans",
-  institute: [isec.tugraz.at],
-  logo: tugraz-logo,
+  institute: [\@nodezeroat/project-athena],
+  logo: nodezero-logo,
   slide-alignment: top,
   progress-bar: true,
   ..args,
@@ -404,7 +414,7 @@
         right: 1.48cm,
         top: 2.6cm,
         bottom: 1.6cm,
-      )
+      ),
     ),
     config-store(
       header: header,
@@ -430,9 +440,10 @@
           number-align: right + horizon,
           breakable: true,
         )
-      }
+      },
     ),
-    config-colors( // Exported from official template
+    config-colors(
+      // Exported from official template
       tug: rgb("e4154b"),
       primary: rgb("e4154b"),
       footer: rgb("808080"),
@@ -452,7 +463,7 @@
       applied: rgb("7d219e"),
       page: rgb("e4154b"),
       fore: rgb("0f0f0f"),
-      back: rgb("ffffff"),
+      back: rgb("3b5a70"),
       dark: rgb("3b5a70"),
       lite: rgb("eeece1"),
       head: rgb("245b78"),
@@ -489,57 +500,58 @@
     config-methods(
       cover: (self: none, body) => hide(body),
       init: (
-      self: none,
-      body,
-    ) => {
-      // TUGraz uses Source Sans Pro, but its a licensed Adobe font
-      set text(size: 20pt, lang: "en", region: "US", font: font)
-      show emph: it => { text(self.colors.primary, it.body) }
-      show cite: it => { text(self.colors.primary, it) }
-      show strong: it => { text(weight: "bold", it.body) }
+        self: none,
+        body,
+      ) => {
+        // TUGraz uses Source Sans Pro, but its a licensed Adobe font
+        set text(size: 20pt, lang: "en", region: "US", font: font)
+        show emph: it => { text(self.colors.primary, it.body) }
+        show cite: it => { text(self.colors.primary, it) }
+        show strong: it => { text(weight: "bold", it.body) }
 
-      // Bibliography
-      set bibliography(title: none, style: "ieee")
-      set cite(style: "alphanumeric")
-      show bibliography: set par(spacing: 0.4cm)
-      show bibliography: set grid(align: top + left)
-      show bibliography: set text(17pt)
-      show bibliography: t => {
-        show grid.cell.where(x: 0): set text(fill: self.colors.primary)
-        show grid.cell.where(x: 0): set align(top + left)
-        show link: set text(fill: gray)
-        t
-      }
+        // Bibliography
+        set bibliography(title: none, style: "ieee")
+        set cite(style: "alphanumeric")
+        show bibliography: set par(spacing: 0.4cm)
+        show bibliography: set grid(align: top + left)
+        show bibliography: set text(17pt)
+        show bibliography: t => {
+          show grid.cell.where(x: 0): set text(fill: self.colors.primary)
+          show grid.cell.where(x: 0): set align(top + left)
+          show link: set text(fill: gray)
+          t
+        }
 
-      // Lists & Enums
-      set list(
-        marker: ( 
-          (move(dy: 0.11cm, square(width: 0.4em, height: 0.4em, fill: self.colors.primary))),
-          (move(dy: 0.11cm, square(width: 0.4em, height: 0.4em, fill: black))),
-          (move(dy: 0.11cm, square(width: 0.4em, height: 0.4em, fill: gray))),
-        ),
-        body-indent: 1.2em,
-      )
-      set enum(
-        numbering: n => {
-          square(stroke: none, fill: self.colors.primary, size: 0.53cm)[
-            #align(center + horizon)[ #text(size: 12pt, fill: white)[#n] ]
-          ]
-        },
-        body-indent: 0.6cm
-      )
+        // Lists & Enums
+        set list(
+          marker: (
+            (move(dy: 0.11cm, square(width: 0.4em, height: 0.4em, fill: self.colors.primary))),
+            (move(dy: 0.11cm, square(width: 0.4em, height: 0.4em, fill: black))),
+            (move(dy: 0.11cm, square(width: 0.4em, height: 0.4em, fill: gray))),
+          ),
+          body-indent: 1.2em,
+        )
+        set enum(
+          numbering: n => {
+            square(stroke: none, fill: self.colors.primary, size: 0.53cm)[
+              #align(center + horizon)[ #text(size: 12pt, fill: white)[#n] ]
+            ]
+          },
+          body-indent: 0.6cm,
+        )
 
-      // Code blocks
-      show: codly-init.with()
-      show raw.where(block: true): set text(size: 13pt)
+        // Code blocks
+        show: codly-init.with()
+        show raw.where(block: true): set text(size: 13pt)
 
-      // Hotfixes, the messy part
+        // Hotfixes, the messy part
 
-      // https://github.com/touying-typ/touying/issues/136
-      set par(spacing: 0.65em)
+        // https://github.com/touying-typ/touying/issues/136
+        set par(spacing: 0.65em)
 
-      body
-    }),
+        body
+      },
+    ),
     ..args,
   )
 
@@ -594,11 +606,11 @@
         column-gutter: 0.7cm,
         row-gutter: 0cm,
         [
-        #rect(
-          fill: if color == none { self.colors.primary } else { color },
-          height: s + top-pad,
-        )
-      ],
+          #rect(
+            fill: if color == none { self.colors.primary } else { color },
+            height: s + top-pad,
+          )
+        ],
         align(horizon, body),
       )
     ]
@@ -638,7 +650,7 @@
   spacing: 0.78em,
   color: none,
   color-body: none,
-  body
+  body,
 ) = [
   #import "@preview/tableau-icons:0.331.0": *
   #touying-fn-wrapper((self: none) => [
@@ -666,7 +678,7 @@
         align(horizon)[#strong(title)]
       } else {
         align(horizon)[
-    #draw-icon(icon, height: 1.2em, baseline: 20%, fill: white) #h(0.2cm) #strong[#title]
+          #draw-icon(icon, height: 1.2em, baseline: 20%, fill: white) #h(0.2cm) #strong[#title]
         ]
       },
       body,
@@ -684,31 +696,41 @@
 ///
 /// -> content
 #let showcase-colors = [
-    #touying-fn-wrapper((self: none) => [
-      #set rect(width: 7.4cm, height: 1.5cm)
-      #set text(fill: white)
-      #set align(center)
-      #grid(columns: 3, rows: 6, column-gutter: 1.8cm, row-gutter: 0.05cm, align: left,
-        rect(fill: self.colors.isec)[isec],
-        rect(fill: self.colors.tug)[tug = main],
-        rect(fill: self.colors.colA)[colA = tugred],
-        rect(fill: self.colors.csbme)[csbme = tugcyan],
-        rect(fill: self.colors.fore)[fore],
-        rect(fill: self.colors.colB)[colB = tugmid],
-        rect(fill: self.colors.crypto)[crypto],
-        rect(fill: self.colors.back)[#text(fill: black)[back]],
-        rect(fill: self.colors.colC)[colC = tuggray],
-        rect(fill: self.colors.system)[system],
-        rect(fill: self.colors.foot)[#text(fill: black)[foot]],
-        rect(fill: self.colors.colD)[colD = tugblue],
-        rect(fill: self.colors.formal)[formal],
-        rect(fill: self.colors.emph)[emph],
-        rect(fill: self.colors.colE)[colE = tuggreen],
-        rect(fill: self.colors.applied)[applied = tugpurple],
-        rect(fill: self.colors.lite)[#text(fill: black)[lite]],
-        rect(fill: self.colors.colF)[colF = tugyellow],
-      )
-    ])
+  #touying-fn-wrapper((self: none) => [
+    #set rect(width: 7.4cm, height: 1.5cm)
+    #set text(fill: white)
+    #set align(center)
+    #grid(
+      columns: 3,
+      rows: 6,
+      column-gutter: 1.8cm,
+      row-gutter: 0.05cm,
+      align: left,
+      rect(fill: self.colors.isec)[isec],
+      rect(fill: self.colors.tug)[tug = main],
+      rect(fill: self.colors.colA)[colA = tugred],
+
+      rect(fill: self.colors.csbme)[csbme = tugcyan],
+      rect(fill: self.colors.fore)[fore],
+      rect(fill: self.colors.colB)[colB = tugmid],
+
+      rect(fill: self.colors.crypto)[crypto],
+      rect(fill: self.colors.back)[#text(fill: black)[back]],
+      rect(fill: self.colors.colC)[colC = tuggray],
+
+      rect(fill: self.colors.system)[system],
+      rect(fill: self.colors.foot)[#text(fill: black)[foot]],
+      rect(fill: self.colors.colD)[colD = tugblue],
+
+      rect(fill: self.colors.formal)[formal],
+      rect(fill: self.colors.emph)[emph],
+      rect(fill: self.colors.colE)[colE = tuggreen],
+
+      rect(fill: self.colors.applied)[applied = tugpurple],
+      rect(fill: self.colors.lite)[#text(fill: black)[lite]],
+      rect(fill: self.colors.colF)[colF = tugyellow],
+    )
+  ])
 ]
 
 //vim:tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab colorcolumn=81
