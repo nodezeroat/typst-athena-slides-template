@@ -52,8 +52,12 @@
   title: auto,
   alignment: none,
   outlined: true,
+  dark: false,
   ..args,
 ) = touying-slide-wrapper(self => {
+  let background = if dark { self.colors.dark } else { self.colors.body }
+  let foreground = if dark { self.colors.lite } else { black }
+
   let info = self.info + args.named()
 
   // Header:
@@ -64,7 +68,7 @@
     // Slide Title: if the user overrides the title of a certain slide, use it
     let hdr = if title != auto { title } else { self.store.header }
 
-    show heading: set text(size: 24pt, weight: "semibold")
+    show heading: set text(foreground, size: 24pt, weight: "semibold")
 
     grid(
       columns: (self.page.margin.left, 1fr, 1cm, 1.2cm),
@@ -78,7 +82,7 @@
   // ---------------------------------------------------------------------------
   let footer(self) = context {
     set block(height: 100%, width: 100%)
-    set text(size: 15pt, fill: self.colors.footer)
+    set text(size: 15pt, fill: if dark { self.colors.footer-lite } else { self.colors.footer })
 
     grid(
       columns: (self.page.margin.bottom - 1.68%, 1.3%, auto, 8cm),
@@ -114,6 +118,7 @@
   }
 
   let self = utils.merge-dicts(self, config-page(
+    fill: background,
     header: header,
     footer: footer,
   ))
@@ -400,7 +405,7 @@
   font: "Open Sans",
   institute: [\@nodezeroat/project-athena],
   logo: nodezero-logo,
-  slide-alignment: top,
+  slide-alignment: horizon,
   progress-bar: true,
   ..args,
   body,
@@ -443,59 +448,12 @@
       },
     ),
     config-colors(
-      // Exported from official template
-      tug: rgb("e4154b"),
-      primary: rgb("e4154b"),
+      primary: rgb("14b5fc"),
       footer: rgb("808080"),
-      isec: rgb("272733"),
-      foot: rgb("e1e1e1"),
-      web: rgb("0c5a77"),
-      csbme: rgb("19b4e3"),
-      arch: rgb("0a98a2"),
-      bauw: rgb("d68e23"),
-      etec: rgb("68242c"),
-      mach: rgb("3066ba"),
-      chem: rgb("5e60a8"),
-      math: rgb("1e6934"),
-      crypto: rgb("a6c947"),
-      system: rgb("1171a8"),
-      formal: rgb("f7931e"),
-      applied: rgb("7d219e"),
-      page: rgb("e4154b"),
-      fore: rgb("0f0f0f"),
-      back: rgb("3b5a70"),
-      dark: rgb("3b5a70"),
-      lite: rgb("eeece1"),
-      head: rgb("245b78"),
-      body: rgb("e2e9ed"),
-      urlA: rgb("0066d8"),
-      urlB: rgb("6c2f91"),
-      colA: rgb("e4154b"),
-      colB: rgb("5191c1"),
-      colC: rgb("a5a5a5"),
-      colD: rgb("285f82"),
-      colE: rgb("78b473"),
-      colF: rgb("e59352"),
-      tugred: rgb("e4154b"),
-      tuggreen: rgb("78b473"),
-      tugblue: rgb("285f82"),
-      tugyellow: rgb("e59352"),
-      tugcyan: rgb("19b4e3"),
-      tugpurple: rgb("7d219e"),
-      tugviolet: rgb("5e60a8"),
-      tugmagenta: rgb("7d219e"),
-      tugturquoise: rgb("0a98a2"),
-      tugbrown: rgb("68242c"),
-      tugblack: rgb("0f0f0f"),
-      tugwhite: rgb("ffffff"),
-      tuggray: rgb("a5a5a5"),
-      tuggrey: rgb("a5a5a5"),
-      tugdark: rgb("3b5a70"),
-      tugmid: rgb("5191c1"),
-      tuglite: rgb("eeece1"),
-      main: rgb("e4154b"),
-      emph: rgb("285f82"),
-      standout: rgb("245b78"),
+      footer-lite: rgb("#c6c6c6"),
+      lite: rgb("72D3FD"),
+      body: rgb("ffffff"),
+      dark: rgb("#040404"),
     ),
     config-methods(
       cover: (self: none, body) => hide(body),
@@ -682,53 +640,6 @@
         ]
       },
       body,
-    )
-  ])
-]
-
-/// Showcase the colors of the slide
-///
-/// Example:
-///
-/// ```typst
-/// #showcase-colors
-/// ```
-///
-/// -> content
-#let showcase-colors = [
-  #touying-fn-wrapper((self: none) => [
-    #set rect(width: 7.4cm, height: 1.5cm)
-    #set text(fill: white)
-    #set align(center)
-    #grid(
-      columns: 3,
-      rows: 6,
-      column-gutter: 1.8cm,
-      row-gutter: 0.05cm,
-      align: left,
-      rect(fill: self.colors.isec)[isec],
-      rect(fill: self.colors.tug)[tug = main],
-      rect(fill: self.colors.colA)[colA = tugred],
-
-      rect(fill: self.colors.csbme)[csbme = tugcyan],
-      rect(fill: self.colors.fore)[fore],
-      rect(fill: self.colors.colB)[colB = tugmid],
-
-      rect(fill: self.colors.crypto)[crypto],
-      rect(fill: self.colors.back)[#text(fill: black)[back]],
-      rect(fill: self.colors.colC)[colC = tuggray],
-
-      rect(fill: self.colors.system)[system],
-      rect(fill: self.colors.foot)[#text(fill: black)[foot]],
-      rect(fill: self.colors.colD)[colD = tugblue],
-
-      rect(fill: self.colors.formal)[formal],
-      rect(fill: self.colors.emph)[emph],
-      rect(fill: self.colors.colE)[colE = tuggreen],
-
-      rect(fill: self.colors.applied)[applied = tugpurple],
-      rect(fill: self.colors.lite)[#text(fill: black)[lite]],
-      rect(fill: self.colors.colF)[colF = tugyellow],
     )
   ])
 ]
