@@ -6,7 +6,7 @@
 
 // Core Imports
 #import "@preview/codly:1.3.0": * // For bindings
-#import "@preview/cetz:0.4.1" // For bindings
+#import "@preview/cetz:0.4.2" // For bindings
 #import "@preview/fletcher:0.5.8" as fletcher: edge, node // For bindings
 #import "@preview/tiaoma:0.3.0" // For auto QR generation
 
